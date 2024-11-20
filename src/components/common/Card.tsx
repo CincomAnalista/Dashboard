@@ -1,16 +1,17 @@
 interface cardProps {
   title: string;
+  icon?: string;
   content?: string;
   children?: React.ReactNode;
 }
 
-export function Card({ title, content, children }: cardProps) {
+export function Card({ title, icon = "fa-solid fa-server", content, children }: cardProps) {
   return (
     <div className="w-full max-w-sm overflow-hidden rounded-lg bg-white shadow-md duration-300 hover:scale-105 hover:shadow-xl">
       <div className="flex justify-center mt-4">
         <div className="relative">
           <div className="flex items-center justify-center w-16 h-16 bg-slate-600 rounded-full">
-            <i className="fa-solid fa-server text-white"></i>
+            <i className={`${icon} text-white`} ></i>
           </div>
           <span className="absolute top-0 right-0 w-3.5 h-3.5 bg-green-400 border-2 border-white rounded-full"></span>
         </div>

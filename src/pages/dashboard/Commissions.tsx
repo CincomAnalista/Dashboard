@@ -3,7 +3,8 @@ import { useState } from 'react';
 import { Table, Header, SearchForm, Popup, Loader } from '../../components';
 import { fetchAlertLoader } from '../../utils/fetchAlertLoader';
 
-const baseUrl = 'http://localhost:3000/commissions/new-cost';
+const baseUrl = `${import.meta.env.VITE_API_URL}/commissions/new-cost`;
+
 export function Commissions() {
   const [tableData, setTableData] = useState([]);
   const [isPopupOpen, setIsPopupOpen] = useState(false);
@@ -28,11 +29,16 @@ export function Commissions() {
   };
 
   const handleUpdate = async () => {
-    const url = `${baseUrl}/update`;
+    const url = `${baseUrl}`;
     try {
       await fetchAlertLoader(
         url,
-        {},
+        {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        },
         setIsLoading,
         'Datos actualizados',
         'Error al acutializar los datos'

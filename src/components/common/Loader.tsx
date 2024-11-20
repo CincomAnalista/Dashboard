@@ -1,10 +1,10 @@
 export function Loader() {
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50">
-      <div>
+      <div className="flex flex-col items-center justify-center">
         <svg
           aria-hidden="true"
-          className="w-8 h-8 text-gray-200 animate-spin fill-green-600"
+          className="w-10 h-10 text-gray-200 animate-spin fill-[#00861f]"
           viewBox="0 0 100 101"
           fill="none"
           xmlns="http://www.w3.org/2000/svg">
@@ -17,7 +17,7 @@ export function Loader() {
             fill="currentFill"
           />
         </svg>
-        <span className="sr-only text-lg text-black">Cargando...</span>
+        <span className="font-bold text-2xl text-white">Cargando...</span>
       </div>
     </div>
   );
