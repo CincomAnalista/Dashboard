@@ -44,7 +44,7 @@ export function Sidebar() {
             isOpen ? 'items-start' : 'items-center'
           } flex-col`}>
           {sidebar_items.map((item) => (
-            <SidebarItem item={item} isOpen={isOpen} />
+            <SidebarItem key={item.id} item={item} isOpen={isOpen} />
           ))}
         </nav>
       </div>

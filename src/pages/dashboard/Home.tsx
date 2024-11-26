@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { Header, Loader } from '../../components';
 import {
   AreaChart,
-  Area, 
+  Area,
   LineChart,
   Line,
   XAxis,
@@ -37,20 +37,23 @@ export function Home() {
         1
       );
 
-    const dataFormatted = data.reduce((acc: Record<string, { salesman: string; total: number }>, item: InvoiceDataProps) => {
-      const { salesman, total_subtotal } = item;
+      const dataFormatted = data.reduce(
+        (
+          acc: Record<string, { salesman: string; total: number }>,
+          item: InvoiceDataProps
+        ) => {
+          const { salesman, total_subtotal } = item;
 
-      if (!acc[salesman]) {
-        acc[salesman] = { salesman, total: 0 };
-      }
+          if (!acc[salesman]) {
+            acc[salesman] = { salesman, total: 0 };
+          }
 
-      acc[salesman].total += total_subtotal;
+          acc[salesman].total += total_subtotal;
 
-      return acc;
-    }, {});
-
-      console.log(Object.values(dataFormatted));
-
+          return acc;
+        },
+        {}
+      );
       setInvoiceData(Object.values(dataFormatted));
     } catch (e) {
       console.error(e);
@@ -63,7 +66,6 @@ export function Home() {
 
   return (
     <Header title="Home">
-    
       <div className="grid grid-cols-2 gap-5 mb-8 h-80">
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={invoiceData}>
@@ -76,7 +78,7 @@ export function Home() {
               type="monotone"
               dataKey="total"
               stroke="#8884d8"
-              tooltipType= 'none'
+              tooltipType="none"
               activeDot={{ r: 8 }}
             />
           </LineChart>
@@ -93,16 +95,12 @@ export function Home() {
               type="monotone"
               dataKey="total"
               stroke="#8884d8"
-              fill='#8884d8'
+              fill="#8884d8"
             />
           </AreaChart>
         </ResponsiveContainer>
       </div>
-      <div>
-     hola
-      </div>
-  
-      
+
       {isLoading && <Loader />}
     </Header>
   );

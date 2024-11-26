@@ -52,7 +52,6 @@ export function Databases() {
     method: 'PUT' | 'GET' | 'POST' | 'DELETE'
   ) => {
     const url = `${baseUrl}${parcialUrl}`;
-    console.log(url);
     try {
       await fetchAlertLoader(
         url,
