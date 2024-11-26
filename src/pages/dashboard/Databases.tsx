@@ -7,37 +7,57 @@ const databases = [
   {
     name: 'PYG',
     url: '/pyg',
-    message: 'Datos actualizados',
-    errMessage: 'Error al actualizar los datos',
-    DeleMessage: 'Error al actualizar los datos',
-    DeleErrMessage: 'Error al actualizar los datos'
-
+    updateMessage: 'Datos actualizados',
+    updateErrMessage: 'Error al actualizar los datos',
+    deleteMessage: 'Datos eliminados',
+    deleteErrMessage: 'Error al eliminar los datos',
+    buton: false
   },
   {
     name: 'Comisiones',
     url: '/commissions',
+    updateMessage: 'Datos actualizados',
+    updateErrMessage: 'Error al actualizar los datos',
+    deleteMessage: 'Datos eliminados',
+    deleteErrMessage: 'Error al eliminar los datos',
+    buton: true
   },
   {
     name: 'Balance',
     url: '/balance',
+    updateMessage: 'Datos actualizados',
+    updateErrMessage: 'Error al actualizar los datos',
+    deleteMessage: 'Datos eliminados',
+    deleteErrMessage: 'Error al eliminar los datos',
+    buton: true
   },
   {
     name: 'Nuevos costos',
     url: '/commissions/new-cost',
+    updateMessage: 'Datos actualizados',
+    updateErrMessage: 'Error al actualizar los datos',
+    deleteMessage: 'Datos eliminados',
+    deleteErrMessage: 'Error al eliminar los datos',
+    buton: true
   }
 ];
 
 export function Databases() {
   const [isLoading, setIsLoading] = useState(false);
 
-  const handleUpdate = async (parcialUrl: string, message:string, errMessage: string) => {
+  const handleDate = async (
+    parcialUrl: string,
+    message: string,
+    errMessage: string,
+    method: 'PUT' | 'GET' | 'POST' | 'DELETE'
+  ) => {
     const url = `${baseUrl}${parcialUrl}`;
     console.log(url);
     try {
       await fetchAlertLoader(
         url,
         {
-          method: 'PUT',
+          method: method,
           headers: {
             'Content-Type': 'application/json'
           }
@@ -52,26 +72,6 @@ export function Databases() {
     }
   };
 
-  const handleDelete = async (parcialUrl: string, message:string, errMessage: string) => {
-    const url = `${baseUrl}${parcialUrl}`;
-    try {
-      await fetchAlertLoader(
-        url,
-        {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        },
-        setIsLoading,
-        message,
-        errMessage,
-        2500
-      );
-    } catch (e) {
-      console.error(e);
-    }
-  };
   return (
     <>
       <Header title="Bases de datos">
@@ -86,22 +86,31 @@ export function Databases() {
             <Card title={d.name} key={index}>
               <button
                 className="shadow-[0_4px_14px_0_rgb(0,133,30,39%)] hover:shadow-[0_6px_20px_rgba(0,133,30,23%)] hover:bg-[rgba(0,133,30,0.9)] px-8 py-2 bg-[#00851e] rounded-md text-white font-light transition duration-200 ease-linear"
-                onClick={() => handleUpdate(d.url, 'hola', 'hola')}>
+                onClick={() =>
+                  handleDate(d.url, d.updateMessage, d.updateErrMessage, 'PUT')
+                }>
                 Actualizar
               </button>
 
-              <button
-                className="shadow-[0_4px_14px_0_rgb(255,0,0,39%)] hover:shadow-[0_6px_20px_rgba(255,0,0,23%)] hover:bg-[rgba(255,0,0,0.9)] px-8 py-2 bg-[#ff0000] rounded-md text-white font-light transition duration-200 ease-linear"
-                onClick={() => handleDelete(d.url, 'hola', 'hola')}>
-                Eliminar
-              </button>
+              {d.buton && (
+                <button
+                  className="shadow-[0_4px_14px_0_rgb(255,0,0,39%)] hover:shadow-[0_6px_20px_rgba(255,0,0,23%)] hover:bg-[rgba(255,0,0,0.9)] px-8 py-2 bg-[#ff0000] rounded-md text-white font-light transition duration-200 ease-linear"
+                  onClick={() =>
+                    handleDate(
+                      d.url,
+                      d.deleteMessage,
+                      d.deleteErrMessage,
+                      'DELETE'
+                    )
+                  }>
+                  Eliminar
+                </button>
+              )}
             </Card>
           ))}
         </div>
       </Header>
-      {isLoading && (
-        <Loader />
-      )}
+      {isLoading && <Loader />}
     </>
   );
 }

@@ -63,8 +63,9 @@ export function Home() {
 
   return (
     <Header title="Home">
-      <div className="p-4">
-        <ResponsiveContainer width="100%" height={400}>
+    
+      <div className="grid grid-cols-2 gap-5 mb-8 h-80">
+        <ResponsiveContainer width="100%" height="100%">
           <LineChart data={invoiceData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="salesman" />
@@ -80,9 +81,8 @@ export function Home() {
             />
           </LineChart>
         </ResponsiveContainer>
-      </div>
-      <div>
-      <ResponsiveContainer width="100%" height={400}>
+
+        <ResponsiveContainer width="100%" height="100%">
           <AreaChart data={invoiceData}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="salesman" />
@@ -98,6 +98,11 @@ export function Home() {
           </AreaChart>
         </ResponsiveContainer>
       </div>
+      <div>
+     hola
+      </div>
+  
+      
       {isLoading && <Loader />}
     </Header>
   );
