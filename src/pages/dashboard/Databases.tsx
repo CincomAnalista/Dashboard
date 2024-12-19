@@ -38,7 +38,7 @@ const databases = [
     updateErrMessage: 'Error al actualizar los datos',
     deleteMessage: 'Datos eliminados',
     deleteErrMessage: 'Error al eliminar los datos',
-    buton: true
+    buton: false
   }
 ];
 

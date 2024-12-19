@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 
 interface ItemProps {
   id_line: number;
@@ -16,23 +16,25 @@ interface PopupProps {
 }
 
 export function Popup({ title, isOpen, item, onClose, onSave }: PopupProps) {
-  const [price, setPrice] = useState<string>(formatCurrency(item?.cost_list || 0));
+  const [price, setPrice] = useState<string>(String(item?.cost_list || ""));
 
   // Sincroniza el estado del precio cuando el elemento cambia
   useEffect(() => {
-    setPrice(formatCurrency(item?.cost_list || 0));
+    setPrice(String(item?.cost_list || ""));
   }, [item]);
 
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.replace(/[^0-9]/g, ""); // Solo números
-    const numericValue = parseInt(value, 10) || 0;
-    setPrice(formatCurrency(numericValue));
+    const value = e.target.value;
+
+    // Permitir solo números, puntos decimales y vacío
+    if (/^\d*\.?\d*$/.test(value)) {
+      setPrice(value);
+    }
   };
 
   const handleSave = () => {
-    const numericPrice = parseInt(price.replace(/[^0-9]/g, ""), 10); // Convertir a número puro
-
-    if (onSave && numericPrice > 0) {
+    const numericPrice = parseFloat(price);
+    if (onSave && !isNaN(numericPrice) && numericPrice >= 0) {
       onSave(numericPrice);
     }
   };
@@ -43,25 +45,17 @@ export function Popup({ title, isOpen, item, onClose, onSave }: PopupProps) {
     }
   };
 
-  // Formatear números como moneda en pesos colombianos
-  function formatCurrency(value: number) {
-    return new Intl.NumberFormat("es-CO", {
-      style: "currency",
-      currency: "COP",
-      minimumFractionDigits: 0,
-    }).format(value);
-  }
 
   return (
     <div
       className={`fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-50 ${
         isOpen ? "" : "hidden"
       }`}
-      onClick={handleOverlayClick} // Detectar clics fuera del popup
+      onClick={handleOverlayClick}
     >
       <div
         className="bg-white w-5/12 rounded-lg shadow-lg"
-        onClick={(e) => e.stopPropagation()} // Evitar cierre al hacer clic dentro del popup
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Header */}
         <div className="flex items-center justify-between p-4 border-b">
@@ -76,7 +70,7 @@ export function Popup({ title, isOpen, item, onClose, onSave }: PopupProps) {
 
         {/* Body */}
         <div className="p-4 space-y-4">
-        <div>
+          <div>
             <label className="block text-sm font-bold text-gray-700">Factura:</label>
             <p className="text-gray-900">{item?.move_name}</p>
           </div>
@@ -90,6 +84,7 @@ export function Popup({ title, isOpen, item, onClose, onSave }: PopupProps) {
               type="text"
               value={price}
               onChange={handlePriceChange}
+              placeholder="Ingresa el precio"
               className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
             />
           </div>
